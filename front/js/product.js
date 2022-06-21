@@ -8,6 +8,7 @@ let _id = urlSearchParams.get("id")
 console.log(_id)
 
 let productData = [];
+let quantiteTotal = [];
 
 
 const fetchProducts = async () => {
@@ -88,63 +89,73 @@ productDisplay();
   
  
 const addBasket = () => {
-console.log("bonjour");
-let bouton = document.getElementById(productData._id);
-console.log(bouton);
-bouton.addEventListener("click", () => {
+  let bouton = document.getElementById(productData._id);
+  console.log(bouton);
+  bouton.addEventListener("click", () => {
   let produitTableau = JSON.parse(localStorage.getItem("product"))
-  console.log(produitTableau)
- let select = document.getElementById("colors")
+  let select = document.getElementById("colors")
   console.log(select.value)
   let quantite = document.getElementById("quantity")
-  console.log(quantite)
-  let nomProduit = document.getElementById("title")
-  console.log(nomProduit);
-  
+  console.log(quantite);
+  //let nomProduit = document.getElementById("title")
+  //console.log(nomProduit);
+
   const fusionproduitColor = Object.assign({}, productData, {
     teinte:`${select.value}`,
-    quantite: 1,
-    nomProduit: `${productData.name}`
-  })
+    quantite: `${quantite.value}`,//quantite select value
+    nomProduit: `${productData.name}`,
+    id:`${productData._id}`
+
+  });
 console.log(fusionproduitColor);
-//document.location.href="./cart.html"
+
+document.location.href="./cart.html"
+
+if(produitTableau == null) {
+  produitTableau = [];
+  produitTableau.push(fusionproduitColor);
+  console.log(produitTableau)
+  localStorage.setItem("product",JSON.stringify(produitTableau))
+} else if (produitTableau != null) {
+    for (i=0; i< produitTableau.length; i++){
+      console.log("test");
+      if (produitTableau[i]._id == productData._id && produitTableau[i].teinte == select.value){
+        return(
+          produitTableau[i].quantite++,
+          console.log("quantite++"),
+          localStorage.setItem("product", JSON.stringify(produitTableau)),
+          produitTableau = JSON.parse(localStorage.getItem("product"))
+        );
+      } 
+    }
+    for (i=0; i< produitTableau.length; i++){
+   if (produitTableau[i]._id == productData._id &&
+       produitTableau[i].teinte != select.value || 
+       produitTableau[i]._id !=productData._id
+       ){
+        return console.log("nouveau"),
+        produitTableau.push(fusionproduitColor),
+        localStorage.setItem('product', JSON.stringify(produitTableau)),
+        produitTableau = JSON.parse(localStorage.getItem("product"))
+
+  };
+   
+    
+  }
+  
+  }
+
+});
+
+
  
 
-//const popupConfirmation = () =>{
-  //if(window.confirm(`${nomProduit} option: ${select.value} a bien été ajouté au panier Consultez le panier OK ou revenir a l'accueil ANNULER`)){
-//window.location.href="cart.html";
- // }else{
 
- // }
-//}
-
-
-
-
-if(produitTableau){
-  produitTableau.push(productData);
-  localStorage.setItem("product", JSON.stringify(produitTableau))
-//popupConfirmation();
-}
-  else  {
-    produitTableau = [];
-    produitTableau.push(productData);
-    console.log(produitTableau);
-    localStorage.setItem("product", JSON.stringify(produitTableau))
-   //popupConfirmation();
-  }
+  return (produitTableau = JSON.parse(localStorage.getItem("product")));
   
-})
-  }
+};
 
   
-
-
-
-
-
-
-
-
+//************************* */
 
 
