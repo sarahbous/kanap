@@ -55,7 +55,7 @@ const productDisplay = async () => {
 
        <div class="item__content__settings__quantity">
                   <label for="itemQuantity">Nombre d'article(s) (1-100) :</label>
-                  <input type="number" name="itemQuantity" min="1" max="100" value="0" id="quantity">
+                  <input type="number" name="itemQuantity" min="1" max="100" value="1" id="quantity">
                 </div>
               </div>
               
@@ -95,7 +95,7 @@ const addBasket = () => {
   let produitTableau = JSON.parse(localStorage.getItem("product"))
   let select = document.getElementById("colors")
   console.log(select.value)
-  let quantite = document.getElementById("quantity")
+  let quantite = document.getElementById("quantity") ;
   console.log(quantite);
   //let nomProduit = document.getElementById("title")
   //console.log(nomProduit);

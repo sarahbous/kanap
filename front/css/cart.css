@@ -49,7 +49,8 @@ h2 {
 .cart__item__content__settings input {
 	color: var(--footer-secondary-color);
 	font-family: 'Montserrat', sans-serif;
-	font-size: 14px;
+	font-size: 18px;
+	
 	border-radius: 20px;
 	border: 1px solid #767676;
 	text-align: center;
@@ -169,4 +170,37 @@ h2 {
 	.cart__order__form {
 		width: 75%;
 	}
+}
+
+/******************bouton plus moins*/
+
+
+.bouton_plus_moins{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	
+}
+button{
+	color: rgb(42 108 206);
+	border-radius: 5px;
+	margin:5px;
+	padding: 5px;
+}
+
+#bouton_plus, 
+#bouton_moins{
+font-size: 30px;
+cursor: pointer;	
+margin: px;
+
+}.display-none{
+	display: none;
+}
+#panier_vide{
+	color: white;
+	font-size: 30px;
+	display: flex;
+	flex-direction: center;
+	font-weight: 400;
 }
