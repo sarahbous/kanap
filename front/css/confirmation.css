@@ -1,14 +1,14 @@
 /**************/
 /*Confirmation*/
 /**************/
-.confirmation {
+#confirmation {
     display: flex;
     justify-content: center;
     margin-top: 85px;
     margin-bottom: 85px;
 }
 
-.confirmation p {
+#confirmation p {
     background-color: white;
     color: #3d424f;
     text-align: center;

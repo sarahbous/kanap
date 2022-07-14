@@ -113,7 +113,7 @@ const panierDisplay = async() =>{
       localStorage.setItem("product", JSON.stringify(someProduct));
       calculProduit();
       console.log("supprimer le produit en question");
-      //(location.href = "cart.html")
+      (location.href = "cart.html")
     }
   })
 })
@@ -293,7 +293,7 @@ const calculProduit = async (
  sommeTotalProduit = eval(produitPrice.toString().replace(/,/g,"+"));
  console.log(sommeTotalProduit)
 
- totalPrice.textContent = sommeTotalProduit+ "E"
+ totalPrice.textContent = sommeTotalProduit
 }
 
 ///////////////formulaire contact//////////////////
@@ -471,7 +471,8 @@ formulaire.addEventListener("submit", (e) =>{
 
     commandeFinal.forEach((commande) =>{
       commandeId.push(commande._id);
-      //location.href ="confirmation.html"    
+    
+      location.href ="confirmation.html"    
     });
     console.log(commandeId)
 
@@ -482,18 +483,21 @@ formulaire.addEventListener("submit", (e) =>{
         address : valueAdresse,
         email:valueEmail,
         city : valueVille
-      },
-      produit:commandeId,
+      }//,
+      //produit:commandeId,
     }
+    const numcommande = {
+      produit :commandeId
+    }
+    console.log(numcommande)
 
     console.log(data);
     localStorage.setItem("formulairevalues", JSON.stringify(data))
+    localStorage.setItem("numcommande", JSON.stringify(numcommande))
+
   }
    else (
     alert("remplir le formulaire")
   )
 
- // const envoyer = {
-   // formulairevalues,
-  //}
 })
