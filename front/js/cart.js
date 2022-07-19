@@ -3,27 +3,22 @@ let someProduct = [];
 let sommeTotalProduit;
 let addProduit = JSON.parse(localStorage.getItem("product"));
 
-//*********************************************** */
-
-
-
-
-//---------------------------------------------------//
-const panierDisplay = async() =>{
+//Afficher un tableau récapitulatif des achats dans le panier
+const panierDisplay = async () => {
   if (addProduit) {
     await addProduit;
     console.log(addProduit);
-    //limitedWidthBlock.classList.add("display-none").innerHTML;
-   // panier_vide.classList.add("display-none")
-  
-    document.getElementById(panier_vide)
-    panier_vide.parentNode.removeChild(panier_vide)
 
+    document.getElementById(panier_vide);
+    panier_vide.parentNode.removeChild(panier_vide);
 
-
-    document.getElementById("cartAndFormContainer").innerHTML = addProduit.map((product) => 
-    `
-    <article class="cart__item" data-id="${product.id}" data-color="${product.teinte}">
+    document.getElementById("cartAndFormContainer").innerHTML = addProduit
+      .map(
+        (product) =>
+          `
+    <article class="cart__item" data-id="${product.id}" data-color="${
+            product.teinte
+          }">
                 <div class="cart__item__img">
                   <img src="${product.imageUrl}"alt="${product.altTxt}">
    </img>             </div>
@@ -31,18 +26,26 @@ const panierDisplay = async() =>{
                   <div class="cart__item__content__description">
                    <h2>${product.name}</h2>
                     <p>${product.teinte}</p>
-                    <p class="total_price_product">${product.price.toString().replace(/00/,"")} €</p>
+                    <p class="total_price_product">${product.price
+                      .toString()
+                      .replace(/00/, "")} €</p>
                   </div>
                   <div class="cart__item__content__settings">
                    <div class="cart__item__content__settings__quantity">
                      <p>Qté :  </p>
                      <div class="bouton_plus_moins">
-                     <button class="bouton_moins" data-id="${product.id}" data-color="${product.teinte}">
+                     <button class="bouton_moins" data-id="${
+                       product.id
+                     }" data-color="${product.teinte}">
                      <span id="bouton_moins" class="fa-solid fa-circle-minus"></span>
                      </button> 
-                      <input type="number" class="itemQuantity" data-id="${product.id}" min="1" max="100" value="${product.quantite}">
+                      <input type="number" class="itemQuantity" data-id="${
+                        product.id
+                      }" min="1" max="100" value="${product.quantite}">
                      
-                      <button class="bouton_plus"  data-id="${product.id}" data-color="${product.teinte}" >
+                      <button class="bouton_plus"  data-id="${
+                        product.id
+                      }" data-color="${product.teinte}" >
                       <span id="bouton_plus" class="fa-solid fa-circle-plus"></span>
                       </button>
                     </div>
@@ -51,7 +54,9 @@ const panierDisplay = async() =>{
                     <p class="total_article">Total par article : €</p>
                   </div>
                     <div class="cart__item__content__settings__delete">
-                   <p class="deleteItem" data-id="${product.id}" data-colors="${product.teinte}">Supprimer</p>
+                   <p class="deleteItem" data-id="${product.id}" data-colors="${
+            product.teinte
+          }">Supprimer</p>
                     </div>
                   </div>
                 </div>
@@ -59,244 +64,198 @@ const panierDisplay = async() =>{
               
           
      
-     `)
-     .join("");
+     `
+      )
+      .join("");
 
-     calculProduit();
+    calculProduit();
 
-     plusQuantite();
+    plusQuantite();
 
     removeProduct();
 
-     minQuantite();
+    minQuantite();
 
-     //calculProduit();
-  
-     return;
-  } else{(addProduit===null) 
+    return;
+  } else {
+    addProduit === null;
     limitedWidthBlock.classList.add("display-none");
   }
-}
-   panierDisplay();
+};
+panierDisplay();
 
-  ///////////***********supprimer produit */
-  const removeProduct = async (panierDisplay) => {
-    await panierDisplay;
-    console.log("je suis la fonction removeProduct");
-   let corbeilles = document.querySelectorAll(".deleteItem");
-    console.log(corbeilles);
-  
+//supprimer un  produit
+const removeProduct = async (panierDisplay) => {
+  await panierDisplay;
+  console.log("je suis la fonction removeProduct");
+  let corbeilles = document.querySelectorAll(".deleteItem");
+  console.log(corbeilles);
+
   corbeilles.forEach((supprimer) => {
-    supprimer.addEventListener("click", () =>{
-    console.log(supprimer);
+    supprimer.addEventListener("click", () => {
+      console.log(supprimer);
 
-    let totalAddProduitRemove = addProduit.length;
+      let totalAddProduitRemove = addProduit.length;
 
-    console.log(totalAddProduitRemove);
+      console.log(totalAddProduitRemove);
 
-    if (totalAddProduitRemove == 1) {
-      return (
-      localStorage.removeItem("product"),
-      console.log("supprime tout le panier"),
-      (location.href = "cart.html")
-      )
-    }
-    else{
-      someProduct = addProduit.filter(el=> {
-        if(supprimer.dataset.id != el._id //||
-         // supprimer.dataset.teinte != el.teinte
- ){
-          return true;
-        }
-      });
-      console.log(someProduct);
-      localStorage.setItem("product", JSON.stringify(someProduct));
-      calculProduit();
-      console.log("supprimer le produit en question");
-      (location.href = "cart.html")
-    }
-  })
-})
-}
-     // corbeille.addEventListener("click", () => {
-       // console.log(corbeille);
-  
-       // let totalAddProduitRemove = addProduit.length;
-  
-       // console.log(totalAddProduitRemove);
-  
-       // if (totalAddProduitRemove == 1) {
-         // return (
-          //  localStorage.removeItem("product"),
-          //  console.log("remove tout le panier"),
-          //  (location.href = "cart.html")
-         // );
-       // } else {
-         // sommeProduct = addProduit.filter((el) => {
-         //   if (
-          //    corbeille.dataset.id != el._id ||
-          //    corbeille.dataset.teinte != el.teinte
-        //    ) {
-          //    return true;
-        //    }
-       //   });
-       //   localStorage.setItem("product", JSON.stringify(sommeProduct));
-       // 
-        //  console.log("corbeille remove le produit en question");
-       //   location.href = "cart.html";
-      //  }
-     // });
-   // });
-   // return;
- // };
-  
-   //////**********bouton plus */
+      if (totalAddProduitRemove == 1) {
+        return (
+          localStorage.removeItem("product"),
+          console.log("supprime tout le panier"),
+          (location.href = "cart.html")
+        );
+      } else {
+        someProduct = addProduit.filter((el) => {
+          if (supprimer.dataset.id != el._id) {
+            return true;
+          }
+        });
+        console.log(someProduct);
+        localStorage.setItem("product", JSON.stringify(someProduct));
+        calculProduit();
+        console.log("supprimer le produit en question");
+        location.href = "cart.html";
+      }
+    });
+  });
+};
 
-   const plusQuantite = async (panierDisplay) =>{
-   await panierDisplay
-   console.log("fonction plus");
-   let plus = document.querySelectorAll(".bouton_plus")
+//Bouton plus ajouter des quantités/
+
+const plusQuantite = async (panierDisplay) => {
+  await panierDisplay;
+  console.log("fonction plus");
+  let plus = document.querySelectorAll(".bouton_plus");
   console.log(plus);
-  plus.forEach((positive) =>{
+  plus.forEach((positive) => {
     positive.addEventListener("click", () => {
       console.log(positive);
 
-      for(i=0; i<addProduit.length;i++){
-        if(addProduit[i]._id == positive.dataset.id){
+      for (i = 0; i < addProduit.length; i++) {
+        if (addProduit[i]._id == positive.dataset.id) {
           return (
             addProduit[i].quantite++,
             console.log("quantite ++"),
             localStorage.setItem("product", JSON.stringify(addProduit)),
-            (document.querySelector('.itemQuantity[data-id="'+positive.dataset.id+'"]').value = 
-          addProduit[i].quantite),
-        (document.querySelectorAll(".total_article")[
-          i
-        ].textContent = ` Total par article ${
-          addProduit[i].quantite *
-           addProduit[i].price.toString().replace(/00/,"")
-          } €`),
-          calculProduit(),
-          console.log("quantite ++")
-    )}
+            (document.querySelector(
+              '.itemQuantity[data-id="' + positive.dataset.id + '"]'
+            ).value = addProduit[i].quantite),
+            (document.querySelectorAll(".total_article")[
+              i
+            ].textContent = ` Total par article ${
+              addProduit[i].quantite *
+              addProduit[i].price.toString().replace(/00/, "")
+            } €`),
+            calculProduit(),
+            console.log("quantite ++")
+          );
+        }
       }
-     // let input = document.querySelector(".itemQuantity");
-      //let result = document.query
-    })
-  })
-  }
-   
-  /////***************Bouton moins */
-  const minQuantite = async (panierDisplay) => {
-    await panierDisplay
-    let moins = document.querySelectorAll(".bouton_moins")
-    console.log(moins);
-    moins.forEach((negative) => {
-      negative.addEventListener("click", () => {
-        console.log(negative);
+    });
+  });
+};
 
-        let totalAddProduit = addProduit.length;
+//Bouton moins diminuer ou supprimer des quantités /
+const minQuantite = async (panierDisplay) => {
+  await panierDisplay;
+  let moins = document.querySelectorAll(".bouton_moins");
+  console.log(moins);
+  moins.forEach((negative) => {
+    negative.addEventListener("click", () => {
+      console.log(negative);
 
-        for(i = 0; i < totalAddProduit; i++) {
-          console.log(totalAddProduit);
-          if(addProduit[i].quantite == 1 && 
-            totalAddProduit == 1
-            
-            ) {
-            return (
-              localStorage.removeItem("product"),
-             location.href = "cart.html", 
-              console.log("remove moins tout")
-            );
-          }
-          if(
-            addProduit[i].quantite == 1 &&
-             totalAddProduit != 1 
-   
-           ) {
-            addProduit.splice(i, 1);
-            localStorage.setItem("product", JSON.stringify(addProduit));
-            location.href = "cart.html";
-            console.log("remove le produit en question");
-          }
-          if (
-           ( addProduit[i].quantite != 1 &&
+      let totalAddProduit = addProduit.length;
+
+      for (i = 0; i < totalAddProduit; i++) {
+        console.log(totalAddProduit);
+        if (addProduit[i].quantite == 1 && totalAddProduit == 1) {
+          return (
+            localStorage.removeItem("product"),
+            (location.href = "cart.html"),
+            console.log("remove moins tout")
+          );
+        }
+        if (addProduit[i].quantite == 1 && totalAddProduit != 1) {
+          addProduit.splice(i, 1);
+          localStorage.setItem("product", JSON.stringify(addProduit));
+          location.href = "cart.html";
+          console.log("remove le produit en question");
+        }
+        if (
+          (addProduit[i].quantite != 1 &&
             totalAddProduit != 11 &&
             addProduit[i]._id == negative.dataset.id) ||
-            (addProduit[i].quantite == 1 &&
+          (addProduit[i].quantite == 1 &&
             totalAddProduit == 1 &&
-            addProduit[i]._id == negative.dataset.id) 
-               
-               
-
-          )
-            {
-            return (
-              addProduit[i].quantite--, 
-                    localStorage.setItem(
-                      "product",
-                     JSON.stringify(addProduit),
-                     (document.querySelector('.itemQuantity[data-id="'+negative.dataset.id+'"]').value = 
-                     addProduit[i].quantite),
-                  document.querySelectorAll(".total_article")[
-                    i
-                  ].textContent =
-                  ` ${
-                    addProduit[i].quantite *
-                     addProduit[i].price.toString().replace(/00/,"")
-                    } €`),
-                    calculProduit(),
-                    console.log("quantite --")
-                    
-            )   
-          }
+            addProduit[i]._id == negative.dataset.id)
+        ) {
+          return (
+            addProduit[i].quantite--,
+            localStorage.setItem(
+              "product",
+              JSON.stringify(addProduit),
+              (document.querySelector(
+                '.itemQuantity[data-id="' + negative.dataset.id + '"]'
+              ).value = addProduit[i].quantite),
+              (document.querySelectorAll(".total_article")[i].textContent = ` ${
+                addProduit[i].quantite *
+                addProduit[i].price.toString().replace(/00/, "")
+              } €`)
+            ),
+            calculProduit(),
+            console.log("quantite --")
+          );
         }
-      })
-    })
-  }
-  
-  
+      }
+    });
+  });
+};
 
-/***************Calcul des produits*********************** */
+//Calcul des produits/
 const calculProduit = async (
- panierDisplay,
- minQuantite,
- plusQuantite,
- removeProduct,
+  panierDisplay,
+  minQuantite,
+  plusQuantite,
+  removeProduct
 ) => {
   await panierDisplay;
   await minQuantite;
   await plusQuantite;
   await removeProduct;
 
-
   console.log("je calcule les produits");
 
- let produitPrice = [];
- let quantiteTotalProduit = [];
+  let produitPrice = [];
+  let quantiteTotalProduit = [];
 
- let newTableau = JSON.parse(localStorage.getItem("product"));
- console.log(newTableau);
- let afficheQuantite = document.querySelectorAll(".itemQuantity");
- console.log(afficheQuantite)
+  let newTableau = JSON.parse(localStorage.getItem("product"));
+  console.log(newTableau);
+  let afficheQuantite = document.querySelectorAll(".itemQuantity");
+  console.log(afficheQuantite);
 
- newTableau.forEach((produit) =>{
-  produitPrice.push(produit.price.toString().replace(/00/,"") * produit.quantite)
-  quantiteTotalProduit.push(produit.quantite)
- });
- console.log(produitPrice);
- console.log(quantiteTotalProduit);
+  newTableau.forEach((produit) => {
+    produitPrice.push(
+      produit.price.toString().replace(/00/, "") * produit.quantite
+    );
+    quantiteTotalProduit.push(produit.quantite);
+  });
+  console.log(produitPrice);
+  console.log(quantiteTotalProduit);
 
- document.getElementById("totalQuantity").textContent = `${eval(quantiteTotalProduit.join("+"))}`;
+  document.getElementById("totalQuantity").textContent = `${eval(
+    quantiteTotalProduit.join("+")
+  )}`;
 
- console.log(produitPrice.toString());
+  console.log(produitPrice.toString());
 
- sommeTotalProduit = eval(produitPrice.toString().replace(/,/g,"+"));
- console.log(sommeTotalProduit)
+  sommeTotalProduit = eval(produitPrice.toString().replace(/,/g, "+"));
+  console.log(sommeTotalProduit);
 
- totalPrice.textContent = sommeTotalProduit
-}
+  totalPrice.textContent = sommeTotalProduit;
+};
 
-///////////////formulaire contact//////////////////
+//Formulaire de contacte/
 
 const prenom = document.getElementById("firstName");
 const nom = document.getElementById("lastName");
@@ -306,198 +265,189 @@ const ville = document.getElementById("city");
 const email = document.getElementById("email");
 
 let valuePrenom, valueNom, valueEmail, valueAdresse, valueVille;
-
-prenom.addEventListener("input", function(e) {
+//analyse les données saisies dans l'input prénom
+prenom.addEventListener("input", function (e) {
   console.log(prenom.value);
   valuePrenom;
-  if (e.target.value.length == 0){
-    firstNameErrorMsg.innerHTML = ""
+  if (e.target.value.length == 0) {
+    firstNameErrorMsg.innerHTML = "";
     console.log("rien");
     valuePrenom = null;
     console.log(valuePrenom);
-  }
-  else if(e.target.value.length < 3 || e.target.value.length > 25){
-    firstNameErrorMsg.innerHTML = "Prenom doit contenir entre 3 et 25 caractères"
+  } else if (e.target.value.length < 3 || e.target.value.length > 25) {
+    firstNameErrorMsg.innerHTML =
+      "Prenom doit contenir entre 3 et 25 caractères";
     valuePrenom = null;
     console.log("trop court ou trop long");
-
   }
-  if (e.target.value.match(/^[a-z A-Z]{3,25}$/)){
-    firstNameErrorMsg.innerHTML = ""
-    valuePrenom = e.target.value
+  if (e.target.value.match(/^[a-z A-Z]{3,25}$/)) {
+    firstNameErrorMsg.innerHTML = "";
+    valuePrenom = e.target.value;
     console.log("success");
     console.log(valuePrenom);
   }
-  if(
+  if (
     !e.target.value.match(/^[a-z A-Z]{3,25}$/) &&
-    e.target.value.length  > 3 &&
+    e.target.value.length > 3 &&
     e.target.value.length < 25
-    ){
+  ) {
     firstNameErrorMsg.innerHTML =
-     "Le champs prénom ne doit pas contenir de chiffres et caractères spéciaux";
-    valuePrenom = null; 
+      "Le champs prénom ne doit pas contenir de chiffres et caractères spéciaux";
+    valuePrenom = null;
     console.log("trop caratère special");
-}
-})
+  }
+});
 
-nom.addEventListener("input", function(e) {
+nom.addEventListener("input", function (e) {
   console.log(nom.value);
   valueNom;
-  if (e.target.value.length == 0){
-    lastNameErrorMsg.innerHTML = ""
+  if (e.target.value.length == 0) {
+    lastNameErrorMsg.innerHTML = "";
     console.log("rien");
     valueNom = null;
     console.log(valuePrenom);
-  }
-  else if(e.target.value.length < 3 || e.target.value.length > 25){
-    lastNameErrorMsg.innerHTML = "Nom doit contenir entre 3 et 25 caractères"
+  } else if (e.target.value.length < 3 || e.target.value.length > 25) {
+    lastNameErrorMsg.innerHTML = "Nom doit contenir entre 3 et 25 caractères";
     valueNom = null;
     console.log("trop court ou trop long");
-
   }
-  if (e.target.value.match(/^[a-z A-Z]{3,25}$/)){
-    lastNameErrorMsg.innerHTML = ""
-    valueNom = e.target.value
+  if (e.target.value.match(/^[a-z A-Z]{3,25}$/)) {
+    lastNameErrorMsg.innerHTML = "";
+    valueNom = e.target.value;
     console.log("success");
     console.log(valueNom);
   }
-  if(
+  if (
     !e.target.value.match(/^[a-z A-Z]{3,25}$/) &&
-    e.target.value.length  > 3 &&
+    e.target.value.length > 3 &&
     e.target.value.length < 25
-    ){
+  ) {
     lastNameErrorMsg.innerHTML =
-     "Le champs nom ne doit pas contenir de chiffres et caractères spéciaux";
-    valueNom = null; 
+      "Le champs nom ne doit pas contenir de chiffres et caractères spéciaux";
+    valueNom = null;
     console.log("trop caratère special");
-}
-})
+  }
+});
+//analyse les données saisies dans l'input adresse
 
-adresse.addEventListener("input", function(e) {
+adresse.addEventListener("input", function (e) {
   console.log(prenom.value);
   valueAdresse;
-  if (e.target.value.length == 0){
-    addressErrorMsg.innerHTML = ""
+  if (e.target.value.length == 0) {
+    addressErrorMsg.innerHTML = "";
     console.log("rien");
     valueAdresse = null;
     console.log(valueAdresse);
-  }
-  else if(e.target.value.length < 3 || e.target.value.length > 35){
-    addressErrorMsg.innerHTML = "Adresse doit contenir entre 3 et 35 caractères"
-    valueAdresse = null;
-    console.log("trop court ou trop long");
-
-  }
-  if (e.target.value.match(/^[0-9]{1,3} [a-z A-Z]{3,25}$/)){
-    addressErrorMsg.innerHTML = ""
-    valueAdresse = e.target.value
-    console.log("success");
-    console.log(valueAdresse);
-  }
-  if(
-    !e.target.value.match(/^[0-9]{1,3} [a-z A-Z]{3,25}$/) &&
-    e.target.value.length  > 3 &&
-    e.target.value.length < 35
-    ){
+  } else if (e.target.value.length < 3 || e.target.value.length > 35) {
     addressErrorMsg.innerHTML =
-     "Le champs adresse ne doit pas contenir de caractères spéciaux et doit commencer par un chiffre";
-    valueAdresse= null; 
+      "Adresse doit contenir entre 3 et 35 caractères";
+    valueAdresse = null;
+    console.log("trop court ou trop long");
+  }
+  if (e.target.value.match(/^[0-9]{1,3} [a-z A-Z]{3,25}$/)) {
+    addressErrorMsg.innerHTML = "";
+    valueAdresse = e.target.value;
+    console.log("success");
+    console.log(valueAdresse);
+  }
+  if (
+    !e.target.value.match(/^[0-9]{1,3} [a-z A-Z]{3,25}$/) &&
+    e.target.value.length > 3 &&
+    e.target.value.length < 35
+  ) {
+    addressErrorMsg.innerHTML =
+      "Le champs adresse ne doit pas contenir de caractères spéciaux et doit commencer par un chiffre";
+    valueAdresse = null;
     console.log("trop caratère special");
-}
-})
+  }
+});
+//analyse les données saisies dans l'input ville
 
-ville.addEventListener("input", function(e) {
+ville.addEventListener("input", function (e) {
   valueVille;
-  if (e.target.value.length == 0){
-    cityErrorMsg.innerHTML = ""
+  if (e.target.value.length == 0) {
+    cityErrorMsg.innerHTML = "";
     console.log("rien");
     valueVille = null;
     console.log(valueVille);
-  }
-  else if(e.target.value.length < 3 || e.target.value.length > 25){
-    cityErrorMsg.innerHTML = "Ville doit contenir entre 3 et 25 caractères"
+  } else if (e.target.value.length < 3 || e.target.value.length > 25) {
+    cityErrorMsg.innerHTML = "Ville doit contenir entre 3 et 25 caractères";
     valueVille = null;
     console.log("trop court ou trop long");
-
   }
-  if (e.target.value.match(/^[a-z A-Z]{3,25}$/)){
-    cityErrorMsg.innerHTML = ""
-    valueVille = e.target.value
+  if (e.target.value.match(/^[a-z A-Z]{3,25}$/)) {
+    cityErrorMsg.innerHTML = "";
+    valueVille = e.target.value;
     console.log("success");
     console.log(valueVille);
   }
-  if(
+  if (
     !e.target.value.match(/^[a-z A-Z]{3,25}$/) &&
-    e.target.value.length  > 3 &&
+    e.target.value.length > 3 &&
     e.target.value.length < 25
-    ){
+  ) {
     cityErrorMsg.innerHTML =
-     "Le champs ville ne doit pas contenir de chiffres et caractères spéciaux";
-    valueVille = null; 
+      "Le champs ville ne doit pas contenir de chiffres et caractères spéciaux";
+    valueVille = null;
     console.log("trop caratère special");
-}
+  }
 });
+//analyse les données saisies dans l'input email
 
 email.addEventListener("input", (e) => {
   if (e.target.value.length == 0) {
     emailErrorMsg.innerHTML = "";
     valueEmail = null;
-    console.log(valueEmail)
-  }
-  else if(e.target.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)){
+    console.log(valueEmail);
+  } else if (e.target.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
     emailErrorMsg.innerHTML = "";
     valueEmail = e.target.value;
-    console.log(valueEmail)
+    console.log(valueEmail);
   }
-  if(
-    !e.target.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) && 
-    !e.target.value.length == 0){
-      emailErrorMsg.innerHTML = "Email non valide ex :sarah@hotmail.fr"
-      valueEmail = null;
-    };
-    
+  if (
+    !e.target.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/) &&
+    !e.target.value.length == 0
+  ) {
+    emailErrorMsg.innerHTML = "Email non valide ex :sarah@hotmail.fr";
+    valueEmail = null;
+  }
 });
-
-formulaire.addEventListener("submit", (e) =>{
+//requête post sur l'api
+formulaire.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log("post stop")
+  console.log("post stop");
 
-  if(valuePrenom && valueEmail && valueNom && valueAdresse && valueVille) {
-    console.log("envoie ")
+  if (valuePrenom && valueEmail && valueNom && valueAdresse && valueVille) {
+    console.log("envoie ");
     const commandeFinal = JSON.parse(localStorage.getItem("product"));
     let commandeId = [];
     console.log(commandeFinal);
     console.log(commandeId);
 
-    commandeFinal.forEach((commande) =>{
+    commandeFinal.forEach((commande) => {
       commandeId.push(commande._id);
-    
-      location.href ="confirmation.html"    
+
+      location.href = "confirmation.html";
     });
-    console.log(commandeId)
+    console.log(commandeId);
 
     const data = {
-      contact:{
-        firstName : valuePrenom,
-        lastName : valueNom,
-        address : valueAdresse,
-        email:valueEmail,
-        city : valueVille
-      }//,
-      //produit:commandeId,
-    }
+      contact: {
+        firstName: valuePrenom,
+        lastName: valueNom,
+        address: valueAdresse,
+        email: valueEmail,
+        city: valueVille,
+      },
+      produit: commandeId,
+    };
     const numcommande = {
-      produit :commandeId
-    }
-    console.log(numcommande)
+      produit: commandeId,
+    };
+    console.log(numcommande);
 
     console.log(data);
-    localStorage.setItem("formulairevalues", JSON.stringify(data))
-    localStorage.setItem("numcommande", JSON.stringify(numcommande))
-
-  }
-   else (
-    alert("remplir le formulaire")
-  )
-
-})
+    localStorage.setItem("formulairevalues", JSON.stringify(data));
+    localStorage.setItem("numcommande", JSON.stringify(numcommande));
+  } else alert("remplir le formulaire");
+});
