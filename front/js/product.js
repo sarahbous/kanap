@@ -96,13 +96,23 @@ const addBasket = () => {
     let quantite = document.getElementById("quantity");
     console.log(quantite);
 
-    const fusionproduitColor = Object.assign({}, productData, {
+    const fusionproduitColor = {
       teinte: `${select.value}`,
       quantite: `${quantite.value}`,
       nomProduit: `${productData.name}`,
       id: `${productData._id}`,
-    });
+      altTxt:`${productData.altTxt}`,
+      imageUrl:`${productData.imageUrl}`
+    
+
+    }
+    
+    const prix = {
+      prix:`${productData.price}`
+    }
+    console.log(prix)
     console.log(fusionproduitColor);
+
 
     document.location.href = "./cart.html";
 

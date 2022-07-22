@@ -1,7 +1,39 @@
+let queryString_url_id = window.location.search;
+console.log(queryString_url_id);
+
+let urlSearchParams = new URLSearchParams(queryString_url_id);
+console.log(urlSearchParams);
+
+let _id = urlSearchParams.get("id");
+console.log(_id);
+
+const getprice= async () => {
+  await fetch(`http://localhost:3000/api/products/`)
+    .then((res) => res.json())
+    .then((promise) => {
+      articlePrix = promise;
+      console.log(articlePrix)
+      let prix = document.getElementById("price");
+  console.log(prix);
+
+  console.log(articlePrix.price);
+    })
+  
+  }
+
+/////////////////////////////
+
+let articlePrix=[]
 let someProduct = [];
 
 let sommeTotalProduit;
 let addProduit = JSON.parse(localStorage.getItem("product"));
+
+   
+  getprice() 
+
+
+
 
 //Afficher un tableau récapitulatif des achats dans le panier
 const panierDisplay = async () => {
@@ -24,12 +56,9 @@ const panierDisplay = async () => {
    </img>             </div>
                <div class="cart__item__content">
                   <div class="cart__item__content__description">
-                   <h2>${product.name}</h2>
+                   <h2>${product.nomProduit}</h2>
                     <p>${product.teinte}</p>
-                    <p class="total_price_product">${product.price
-                      .toString()
-                      .replace(/00/, "")} €</p>
-                  </div>
+                   
                   <div class="cart__item__content__settings">
                    <div class="cart__item__content__settings__quantity">
                      <p>Qté :  </p>
@@ -66,7 +95,9 @@ const panierDisplay = async () => {
      
      `
       )
+
       .join("");
+    
 
     calculProduit();
 
@@ -427,7 +458,7 @@ formulaire.addEventListener("submit", (e) => {
     commandeFinal.forEach((commande) => {
       commandeId.push(commande._id);
 
-      location.href = "confirmation.html";
+      //location.href = "confirmation.html";
     });
     console.log(commandeId);
 
@@ -439,15 +470,61 @@ formulaire.addEventListener("submit", (e) => {
         email: valueEmail,
         city: valueVille,
       },
-      produit: commandeId,
+      products: commandeId,
     };
-    const numcommande = {
-      produit: commandeId,
-    };
-    console.log(numcommande);
-
+    envoyerServeur(data)
     console.log(data);
     localStorage.setItem("formulairevalues", JSON.stringify(data));
-    localStorage.setItem("numcommande", JSON.stringify(numcommande));
+    //localStorage.setItem("numcommande", JSON.stringify(numcommande));
   } else alert("remplir le formulaire");
 });
+function envoyerServeur(data){
+  //Envoie de l'objet vers le serveur
+  const promise01 = fetch("http://localhost:3000/api/products/order", {
+    method:"POST",
+    body: JSON.stringify(data),
+    headers: {
+      "content-type": "application/json",
+    },
+  })
+  //.then((res) => res.json())
+  //.then((value) => {
+     //Permet d'effacer ce qui est stocké dans le localStorage
+    //localStorage.clear();
+   //window.location.href = `../html/confirmation.html?id=${value.orderId}`;
+  //})
+  //.catch((err) => console.log(err));
+
+
+
+
+
+
+  //pour voir le resultat du serveur dan sla console
+promise01.then(async(response)=>{
+  //Si la promesse n'est pas resolu, si ell est rejeté
+  try{
+    const contenu = await response.json();
+    console.log("contenu de response")
+    console.log(contenu);
+
+    if(response.ok){
+      console.log(`Resultat de response.ok : ${response.ok}`);
+      //Recupération de l'id de la response du serveur
+      console.log("id de la response")
+      console.log(contenu.orderId)
+       //mettre l'ID dans le localstorage
+       localStorage.setItem("responseId", contenu.orderId);
+       //Aller vers la,page confirmation commande
+       window.location = "confirmation.html";
+   } else{
+      console.log(`reponse du serveur : ${response.status}`)
+     alert(`Problème avec le serveur : erreur ${response.status}`)
+   }
+  }catch(e){
+    console.log("erreur qui vient du catch()");
+    console.log(e);
+    alert(`ERREUR qui vient du catch() ${e}`)
+  }
+})
+}
