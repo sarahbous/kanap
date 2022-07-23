@@ -1,52 +1,20 @@
-let queryString_url_id = window.location.search;
-console.log(queryString_url_id);
-
-let urlSearchParams = new URLSearchParams(queryString_url_id);
-console.log(urlSearchParams);
-
-let _id = urlSearchParams.get("id");
-console.log(_id);
-
-const getprice= async () => {
-  await fetch(`http://localhost:3000/api/products/`)
-    .then((res) => res.json())
-    .then((promise) => {
-      articlePrix = promise;
-      console.log(articlePrix)
-      let prix = document.getElementById("price");
-  console.log(prix);
-
-  console.log(articlePrix.price);
-    })
-  
-  }
-
-/////////////////////////////
-
-let articlePrix=[]
 let someProduct = [];
 
 let sommeTotalProduit;
 let addProduit = JSON.parse(localStorage.getItem("product"));
-
-   
-  getprice() 
-
-
-
 
 //Afficher un tableau récapitulatif des achats dans le panier
 const panierDisplay = async () => {
   if (addProduit) {
     await addProduit;
     console.log(addProduit);
-
     document.getElementById(panier_vide);
     panier_vide.parentNode.removeChild(panier_vide);
 
     document.getElementById("cartAndFormContainer").innerHTML = addProduit
       .map(
         (product) =>
+          
           `
     <article class="cart__item" data-id="${product.id}" data-color="${
             product.teinte
@@ -58,7 +26,9 @@ const panierDisplay = async () => {
                   <div class="cart__item__content__description">
                    <h2>${product.nomProduit}</h2>
                     <p>${product.teinte}</p>
-                   
+                    <p class="total_price_product">${product.price
+                      .toString()
+                      .replace(/00/, "")} €</p>
                   <div class="cart__item__content__settings">
                    <div class="cart__item__content__settings__quantity">
                      <p>Qté :  </p>
@@ -112,6 +82,7 @@ const panierDisplay = async () => {
     addProduit === null;
     limitedWidthBlock.classList.add("display-none");
   }
+  
 };
 panierDisplay();
 
@@ -478,6 +449,8 @@ formulaire.addEventListener("submit", (e) => {
     //localStorage.setItem("numcommande", JSON.stringify(numcommande));
   } else alert("remplir le formulaire");
 });
+
+
 function envoyerServeur(data){
   //Envoie de l'objet vers le serveur
   const promise01 = fetch("http://localhost:3000/api/products/order", {

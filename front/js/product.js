@@ -12,7 +12,7 @@ console.log(_id);
 let productData = [];
 let quantiteTotal = [];
 //récupérer l'id du produit à afficher
-const fetchProducts = async () => {
+const fetchProduct = async () => {
   await fetch(`http://localhost:3000/api/products/${_id}`)
     .then((res) => res.json())
     .then((promise) => {
@@ -22,7 +22,7 @@ const fetchProducts = async () => {
 };
 //Insérer un produit et ses détails dans la page produit
 const productDisplay = async () => {
-  await fetchProducts();
+  await fetchProduct();
   document.title = `${productData.name}`;
 
   document.getElementById("item").innerHTML = `
@@ -85,7 +85,7 @@ const productDisplay = async () => {
 };
 productDisplay();
 
-//Ajouter les produits sélectionnés dans la page produits sélectionnés dans la page panier
+//Ajouter les produits sélectionnés dans la page produits  dans la page panier
 const addBasket = () => {
   let bouton = document.getElementById(productData._id);
   console.log(bouton);
@@ -96,23 +96,13 @@ const addBasket = () => {
     let quantite = document.getElementById("quantity");
     console.log(quantite);
 
-    const fusionproduitColor = {
+    const fusionproduitColor = Object.assign({}, productData, {
       teinte: `${select.value}`,
       quantite: `${quantite.value}`,
       nomProduit: `${productData.name}`,
       id: `${productData._id}`,
-      altTxt:`${productData.altTxt}`,
-      imageUrl:`${productData.imageUrl}`
-    
-
-    }
-    
-    const prix = {
-      prix:`${productData.price}`
-    }
-    console.log(prix)
+    });
     console.log(fusionproduitColor);
-
 
     document.location.href = "./cart.html";
 
